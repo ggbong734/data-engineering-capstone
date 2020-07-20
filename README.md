@@ -37,7 +37,7 @@ The dataset comes in CSV and Parquet formats and are initially stored in AWS S3.
 
 ![Airflow logo](images/airflow-image1.png)
 
-Airflow is selected as the scheduler and workflow tracker as it is easily extendable through the use of custoe operators, hooks, sensors and comes with a user-friendly interface. Airflow also offers the ability to monitor tasks and send alerts in case of any failure.
+Airflow is selected as the scheduler as it is able to run tasks in parallel, is easily extendable through the use of custom operators, hooks, sensors and comes with a user-friendly interface. Airflow also offers the ability to retry tasks and send alerts in case of a persistent failure.
 
 The process of copying the CSV and parquet data from S3 to Redshift, transforming the data, and loading the data to the final tables are built into an ETL pipeline using Airflow with a daily update schedule . Additionally, a data quality check is performed to ensure that there are no missing values for the primary keys of the tables. 
 
@@ -53,7 +53,7 @@ Here are the graph and tree views of the Airflow DAG:
 ## Additional thoughts
 
 * In the scenario that the data size was increased by 100x:
-    * One alternative would be to host the data on multiple clusters of machine (scaling out) and use Spark SQL to leverage the power of distributed computing in order to speed up the data ingestion and processing steps. 
+    * One alternative would be to host the data on multiple clusters of machine (scaling out) and add distribution keys for each table in order to speed up date retrieval. Another way is to use Spark SQL to leverage the power of distributed computing in order to speed up the data ingestion and processing steps. 
     
     
 * In the scenario that the data populates a dashboard that must be updated on a daily basis by 7am every day:
@@ -62,3 +62,6 @@ Here are the graph and tree views of the Airflow DAG:
 
 * In the scenario that the database needed to be accessed by 100+ people:
     * One could use a database system that is compatible with Spark as Spark has powerful built-in tools to handle concurrent operations by scheduling work in a sequential manner while still enabling parallelism.
+
+
+Good reference for building ETL pipelines using Redshift and Airflow [link](https://medium.com/velotio-perspectives/lessons-learnt-while-building-an-etl-pipeline-for-mongodb-amazon-redshift-using-apache-airflow-543bb0b75017).
